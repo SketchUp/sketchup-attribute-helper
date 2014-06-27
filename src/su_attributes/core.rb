@@ -42,23 +42,45 @@ module Sketchup
 
     model = Sketchup.active_model
     selection = model.selection
-    return "Invalid selection size" unless selection.size == 1
-    return "Invalid entity type" unless selection[0].is_a?(Sketchup::Group) ||
-      selection[0].is_a?(Sketchup::ComponentInstance)
 
-    instance = selection[0]
-    if instance.respond_to?(:definition)
-      definition = instance.definition
+    if selection.empty?
+      if model.active_path.nil?
+        entity = model
+      else
+        entity = model.active_path.last
+      end
     else
-      definition = instance.entities.parent
+      return "Invalid selection size" unless selection.size == 1
+      entity = selection[0]
     end
 
-    dictionaries = definition.attribute_dictionaries
-    return "No dictionaries" if dictionaries.nil?
+    html.puts "<h1>#{self.escape_html(entity)}</h1>"
+    if entity.respond_to?(:name)
+      html.puts "<h2>#{self.escape_html(entity.name)}</h2>"
+    end
+    if entity.attribute_dictionaries
+      entity.attribute_dictionaries.each { |dictionary|
+        html.puts self.format_dictionary(dictionary)
+      }
+    else
+      html.puts "No dictionaries"
+    end
 
-    dictionaries.each { |dictionary|
-      html.puts self.format_dictionary(dictionary)
-    }
+    if entity.is_a?(Sketchup::Group)
+      definition = entity.entities.parent
+    elsif entity.is_a?(Sketchup::ComponentInstance)
+      definition = entity.definition
+    else
+      definition = nil
+    end
+
+    if definition && definition.attribute_dictionaries
+      html.puts "<h1>#{self.escape_html(definition)}</h1>"
+      html.puts "<h2>#{self.escape_html(definition.name)}</h2>"
+      definition.attribute_dictionaries.each { |dictionary|
+        html.puts self.format_dictionary(dictionary)
+      }
+    end
 
     html.string
   end
@@ -106,6 +128,12 @@ module Sketchup
   html {
     font-family: "Calibri", sans-serif;
     font-size: 10pt;
+  }
+  h1 {
+    font-size: 1.5em;
+  }
+  h2 {
+    font-size: 1.2em;
   }
   table {
     width: 100%;
