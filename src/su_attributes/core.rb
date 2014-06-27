@@ -7,6 +7,12 @@ module Sketchup
 
   PLUGIN = self
 
+  class << self
+    attr_reader :app_observer
+    attr_reader :model_observer
+    attr_reader :selection_observer
+  end
+
 
   def self.visualize_selected
     content = self.traverse_selected
@@ -26,14 +32,33 @@ module Sketchup
     @window.set_html(html)
     @window.set_on_close {
       @window = nil
-      Sketchup.active_model.selection.remove_observer(@selection_observer)
+      self.detach_observers
     }
-    @window.show
+    unless @window.visible?
+      @window.show
+      self.attach_observers
+    end
+  end
 
-    @selection_observer ||= AttributeSelectionObserver.new
+
+  def self.attach_observers
+    @app_observer ||= AppObserver.new
+    @model_observer ||= ModelObserver.new
+    @selection_observer ||= SelectionObserver.new
     model = Sketchup.active_model
+    Sketchup.remove_observer(@app_observer)
+    model.remove_observer(@model_observer)
     model.selection.remove_observer(@selection_observer)
+    Sketchup.add_observer(@app_observer)
+    model.add_observer(@model_observer)
     model.selection.add_observer(@selection_observer)
+  end
+
+
+  def self.detach_observers
+    Sketchup.remove_observer(@app_observer)
+    Sketchup.active_model.remove_observer(@model_observer)
+    Sketchup.active_model.selection.remove_observer(@selection_observer)
   end
 
 
@@ -167,7 +192,7 @@ module Sketchup
   end
 
 
-  class AttributeSelectionObserver < Sketchup::SelectionObserver
+  class SelectionObserver < Sketchup::SelectionObserver
     def onSelectionAdded(selection, element)
       selection_changed()
     end
@@ -186,7 +211,56 @@ module Sketchup
     def selection_changed
       PLUGIN.visualize_selected
     end
-  end
+  end # class SelectionObserver
+
+
+  class ModelObserver < Sketchup::ModelObserver
+    def onActivePathChanged(model)
+      PLUGIN.visualize_selected
+    end
+
+    def onTransactionCommit(model)
+      model_changed(model)
+    end
+    def onTransactionEmpty(model)
+      model_changed(model)
+    end
+    def onTransactionRedo(model)
+      model_changed(model)
+    end
+    def onTransactionUndo(model)
+      model_changed(model)
+    end
+
+    private
+
+    def model_changed(model)
+      if @timer.nil?
+        @timer = UI.start_timer(0.0, false) {
+          @timer = nil
+          PLUGIN.visualize_selected
+        }
+      end
+    end
+  end # class ModelObserver
+
+
+  class AppObserver < Sketchup::AppObserver
+    def onNewModel(model)
+      observe_model(model)
+    end
+    def onOpenModel(model)
+      observe_model(model)
+    end
+
+    private
+
+    def observe_model(model)
+      model.add_observer(PLUGIN.model_observer)
+      model.selection.add_observer(PLUGIN.selection_observer)
+      PLUGIN.visualize_selected
+    end
+  end # class AppObserver
 
 
   unless file_loaded?(__FILE__)
