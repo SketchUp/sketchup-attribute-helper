@@ -122,11 +122,11 @@ module Sketchup
       html_key = self.escape_html(key)
       html_value = self.escape_html(value)
       node_path = "#{path}:#{html_key}"
-      html.puts "<tr title='#{node_path}'><td>#{html_key}</td><td>#{html_value}</td></tr>"
+      html.puts "<tr title='#{node_path}'><td>#{html_key}</td><td>#{html_value}</td><td class='value_type'>#{value.class}</td></tr>"
     }
     if dictionary.attribute_dictionaries
       dictionary.attribute_dictionaries.each { |sub_dic|
-        html.puts "<tr><td colspan='2' class='dictionary'>"
+        html.puts "<tr><td colspan='3' class='dictionary'>"
         html.puts self.format_dictionary(sub_dic, path)
         html.puts "</td></tr>"
       }
@@ -181,6 +181,10 @@ module Sketchup
   }
   tr:hover td {
     background: rgba(255,210,180,0.2);
+  }
+  .value_type {
+    text-align: right;
+    width: 5%;
   }
 </style>
 <head>
