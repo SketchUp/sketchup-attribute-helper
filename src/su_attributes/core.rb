@@ -1,3 +1,7 @@
+# Copyright 2014, Trimble Navigation Limited
+#
+# License: The MIT License (MIT)
+
 require "sketchup.rb"
 require "stringio"
 
