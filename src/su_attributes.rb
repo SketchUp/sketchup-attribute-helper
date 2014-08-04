@@ -1,19 +1,10 @@
-#-------------------------------------------------------------------------------
+# Copyright 2014, Trimble Navigation Limited
 #
-# Copyright 2013, Trimble Navigation Limited
+# License: The MIT License (MIT)
 #
-# This software is provided as an example of using the Ruby interface
-# to SketchUp.
-#
-# Permission to use, copy, modify, and distribute this software for 
-# any purpose and without fee is hereby granted, provided that the above
-# copyright notice appear in all copies.
-#
-# THIS SOFTWARE IS PROVIDED "AS IS" AND WITHOUT ANY EXPRESS OR
-# IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-#
-#-------------------------------------------------------------------------------
+# A SketchUp Ruby Extension that surfaces attributes attached to components. 
+# More info at https://github.com/SketchUp/sketchup-attribute-helper
+
 
 require 'sketchup.rb'
 require 'extensions.rb'
