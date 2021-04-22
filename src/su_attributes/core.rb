@@ -272,8 +272,8 @@ module Sketchup
 
 
   unless file_loaded?(__FILE__)
-    plugins_menu = UI.menu("Plugins")
-    menu = plugins_menu.add_submenu("Attribute Helper")
+    menu_name = Sketchup.version.to_f < 21.1 ? 'Plugins' : 'Developer'
+    menu = UI.menu(menu_name).add_submenu("Attribute Helper")
     menu.add_item("Visualize Selected") {
       self.visualize_selected
     }
