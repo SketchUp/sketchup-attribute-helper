@@ -1,4 +1,4 @@
-# Copyright 2014, Trimble Navigation Limited
+# Copyright 2014-2021, Trimble Inc.
 #
 # License: The MIT License (MIT)
 #
@@ -20,7 +20,7 @@ module Sketchup
   # Plugin information
   PLUGIN_ID       = 'AttributeHelper'.freeze
   PLUGIN_NAME     = 'SketchUp Attribute Helper'.freeze
-  PLUGIN_VERSION  = '1.0.1'.freeze
+  PLUGIN_VERSION  = '1.0.2'.freeze
 
   # Resource paths
   FILENAMESPACE = File.basename(__FILE__, '.*')
@@ -35,7 +35,7 @@ module Sketchup
     ex = SketchupExtension.new(PLUGIN_NAME, loader)
     ex.description = 'Visually inspect nested attributes in SketchUp.'
     ex.version     = PLUGIN_VERSION
-    ex.copyright   = 'Trimble Navigation Limited © 2015'
+    ex.copyright   = 'Trimble Inc © 2015-2021'
     ex.creator     = 'SketchUp'
     Sketchup.register_extension(ex, true)
   end

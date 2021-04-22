@@ -1,4 +1,4 @@
-# Copyright 2014, Trimble Navigation Limited
+# Copyright 2014-2021, Trimble Inc.
 #
 # License: The MIT License (MIT)
 
