@@ -11,8 +11,7 @@ require 'extensions.rb'
 
 #-------------------------------------------------------------------------------
 
-module Sketchup
- module Extensions
+module Trimble
   module AttributeHelper
 
   ### CONSTANTS ### ------------------------------------------------------------
@@ -41,8 +40,7 @@ module Sketchup
   end
 
   end # module AttributeHelper
- end # module Extensions
-end # module Sketchup
+end # module Trimble
 
 #-------------------------------------------------------------------------------
 

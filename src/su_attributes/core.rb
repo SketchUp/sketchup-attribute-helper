@@ -5,8 +5,7 @@
 require "sketchup.rb"
 require "stringio"
 
-module Sketchup
- module Extensions
+module Trimble
   module AttributeHelper
 
   PLUGIN = self
@@ -282,5 +281,4 @@ module Sketchup
 
 
   end # module AttributeHelper
- end # module Extensions
 end # module Sketchup
