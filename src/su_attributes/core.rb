@@ -271,11 +271,12 @@ module Trimble
 
 
   unless file_loaded?(__FILE__)
+    command = UI::Command.new("Visualize Selected") { self.visualize_selected }
+    command.status_bar_text = "Inspect and edit the attributes of a selection."
+
     menu_name = Sketchup.version.to_f < 21.1 ? 'Plugins' : 'Developer'
     menu = UI.menu(menu_name).add_submenu("Attribute Helper")
-    menu.add_item("Visualize Selected") {
-      self.visualize_selected
-    }
+    menu.add_item(command)
     file_loaded(__FILE__)
   end
 
