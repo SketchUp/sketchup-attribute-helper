@@ -19,7 +19,7 @@ module Trimble
   # Plugin information
   PLUGIN_ID       = 'AttributeHelper'.freeze
   PLUGIN_NAME     = 'SketchUp Attribute Helper'.freeze
-  PLUGIN_VERSION  = '1.0.2'.freeze
+  PLUGIN_VERSION  = '1.0.3'.freeze
 
   # Resource paths
   FILENAMESPACE = File.basename(__FILE__, '.*')
